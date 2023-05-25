@@ -17,8 +17,8 @@ fi
 
 # Install Necessary Packages
 # Install Necessary Packages
-apt update
-apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools git curl default-jdk zsh -y
+apt update >/dev/null 2>&1
+apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools git curl default-jdk zsh -y >/dev/null 2>&1
 
 # Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
 bash -c '
@@ -43,12 +43,12 @@ fi
 '
 
 # Apply Settings
-echo 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash module_blacklist=hid_sensor_hub"' >> /etc/default/grub
-update-grub
-gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
-powertop --auto-tune
-systemctl start powertop
-systemctl enable powertop
-echo PCIE_ASPM_ON_BAT=powersupersave >> /etc/tlp.conf
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+echo 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash module_blacklist=hid_sensor_hub"' >> /etc/default/grub >/dev/null 2>&1
+update-grub >/dev/null 2>&1
+gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']" >/dev/null 2>&1
+powertop --auto-tune >/dev/null 2>&1
+systemctl start powertop >/dev/null 2>&1
+systemctl enable powertop >/dev/null 2>&1
+echo PCIE_ASPM_ON_BAT=powersupersave >> /etc/tlp.conf >/dev/null 2>&1
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended >/dev/null 2>&1
 echo "Successfully installed packages and updated settings. Please restart your system for some settings to take effect."
