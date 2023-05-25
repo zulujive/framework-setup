@@ -1,5 +1,33 @@
 #!/bin/bash
 
+# Define color codes for formatting
+GREEN="\e[32m"
+CYAN="\e[36m"
+YELLOW='\033[33m'
+RESET="\e[0m"
+
+# Define progress bar function
+progressbar() {
+  local duration=${1}
+  local bar_length=40
+  local sleep_duration=$(echo "scale=5; ${duration} / ${bar_length}" | bc)
+
+  for ((i = 0; i <= bar_length; i++)); do
+    echo -ne "\e[34m[\e[0m"
+    for ((j = 0; j <= i; j++)); do
+      echo -ne "\e[34m=\e[0m"
+    done
+    echo -ne "\e[34m>\e[0m"
+    for ((j = i; j < bar_length; j++)); do
+      echo -ne "\e[34m \e[0m"
+    done
+    echo -ne "\e[34m]\e[0m"
+    echo -ne " ($(echo "scale=2; $i * (100 / $bar_length)" | bc)%)\r"
+    sleep "${sleep_duration}"
+  done
+  echo ""
+}
+
 # THIS SCRIPT MUST BE RUN AS ROOT (use sudo su)
 # Use this to configure your Framework Laptop for Debian Sid
 
@@ -11,38 +39,47 @@
 
 # Check if the script is being run with root privileges
 if [[ $EUID -ne 0 ]]; then
-  echo "This script must be run as root (use 'sudo su')."
+  echo -e "${CYAN}This script must be run as root (use 'sudo su').${RESET}"
   exit 1
 fi
 
-# Install Necessary Packages
-echo "Installing Packages..."
-apt update >/dev/null 2>&1
-apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools git curl default-jdk zsh -y >/dev/null 2>&1
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended >/dev/null 2>&1
-echo "Packages Installed!"
+echo -e "${GREEN}Installing Packages...${RESET}"
+echo -e "${YELLOW}Updating Repositories...${RESET}"
+apt update >/dev/null 2>&1 | progressbar 15
+echo -e "${YELLOW}Installing...${RESET}"
+apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools git curl default-jdk zsh -y >/dev/null 2>&1 | progressbar 5
+echo -e "${YELLOW}Setting up ZSH...${RESET}"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended >/dev/null 2>&1 | progressbar 5
+echo -e "${GREEN}Packages Installed!${RESET}"
+echo ""
 
 # Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
-echo "Using stable repos as failover"
+echo -e "${CYAN}Using stable repos as failover${RESET}"
 cp /etc/apt/sources.list /etc/apt/sources.list.bak
-echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list 2>/dev/null
-echo "deb http://deb.debian.org/debian buster-updates main" >> /etc/apt/sources.list 2>/dev/null
-echo "deb http://security.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list 2>/dev/null
-apt update >/dev/null 2>&1
-echo "Updating Packages..."
-apt upgrade -y >/dev/null 2>&1
-echo "Packages Upgraded!"
+echo -e "${YELLOW}Adding Debian Buster Main...${RESET}"
+echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list 2>/dev/null | progressbar 3
+echo -e "${YELLOW}Adding Debian Buster Updates Main...${RESET}"
+echo "deb http://deb.debian.org/debian buster-updates main" >> /etc/apt/sources.list 2>/dev/null | progressbar 3
+echo -e "${YELLOW}Adding Debian Buster Security Updates Main...${RESET}"
+echo "deb http://security.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list 2>/dev/null | progressbar 3
+echo -e "${YELLOW}Applying repository changes...${RESET}"
+apt update >/dev/null 2>&1 | progressbar 15
+echo -e "${YELLOW}Uprading Packages...${YELLOW}"
+apt upgrade -y 2>&1 | progressbar 5
+echo -e "${GREEN}Packages Upgraded!${RESET}"
+echo ""
 
 # Apply Settings
-echo "Installing GRUB Blacklist"
+echo -e "${CYAN}Installing GRUB Blacklist${RESET}"
 echo 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash module_blacklist=hid_sensor_hub"' >> /etc/default/grub >/dev/null 2>&1
-update-grub >/dev/null 2>&1
+update-grub >/dev/null 2>&1 | progressbar 5
 gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']" >/dev/null 2>&1
-echo "Configuring PowerTOP..."
-powertop --auto-tune >/dev/null 2>&1
-systemctl start powertop >/dev/null 2>&1
-systemctl enable powertop >/dev/null 2>&1
-echo "PowerTOP Configured!"
-echo PCIE_ASPM_ON_BAT=powersupersave >> /etc/tlp.conf >/dev/null 2>&1
 echo ""
-echo "Successfully installed packages and updated settings. Please restart your system for some settings to take effect."
+echo -e "${CYAN}Configuring PowerTOP...${RESET}"
+powertop --auto-tune >/dev/null 2>&1
+systemctl start powertop >/dev/null 2>&1 | progressbar 3
+systemctl enable powertop >/dev/null 2>&1
+echo "PCIE_ASPM_ON_BAT=powersupersave" >> /etc/tlp.conf >/dev/null 2>&1
+echo -e "${GREEN}PowerTOP Configured!${RESET}"
+echo ""
+echo -e "${GREEN}Successfully installed packages and updated settings. Please restart your system for some settings to take effect.${RESET}"
