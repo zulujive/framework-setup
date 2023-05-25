@@ -16,10 +16,17 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Install Necessary Packages
+# Set DEBIAN_FRONTEND to non-interactive
+export DEBIAN_FRONTEND=noninteractive
+
+# Install Necessary Packages
 apt update
 apt install git curl default-jdk zsh -y
 apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools -y
-apt upgrade -y >/dev/null 2>&1
+apt upgrade -y
+
+# Unset DEBIAN_FRONTEND
+unset DEBIAN_FRONTEND
 
 # Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
 read -p "Do you want to add stable Debian repositories as a failover (sometimes required for installing certain software)? (Y/n) " choice
