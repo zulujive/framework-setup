@@ -23,7 +23,10 @@ curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/instal
 chmod +x install.sh
 ./install.sh --unattended
 # Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
-read -p "Do you want to add stable Debian repositories as a failover (sometimes required for installing certain software)? (Y/n) " choice
+read -rp "Do you want to add stable Debian repositories as a failover (sometimes required for installing certain software)? (Y/n) " choice
+
+# Set default choice to "n" if no input is provided
+choice=${choice:-n}
 
 # Convert the input to lowercase
 choice=${choice,,}
