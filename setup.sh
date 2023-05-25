@@ -17,8 +17,9 @@ fi
 
 #Install Necessary Packages
 apt update
-apt install git curl default-jdk zsh
+apt install git curl default-jdk zsh -y
 apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools -y
+apt upgrade
 
 #Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
 read -p "Do you want to add stable Debian repositories as a failover (sometimes required for installing certain software)? (Y/n) " choice
