@@ -19,7 +19,6 @@ fi
 # Install Necessary Packages
 apt update
 apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools git curl default-jdk zsh -y
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
 bash -c '
@@ -51,7 +50,5 @@ powertop --auto-tune
 systemctl start powertop
 systemctl enable powertop
 echo PCIE_ASPM_ON_BAT=powersupersave >> /etc/tlp.conf
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 echo "Successfully installed packages and updated settings. Please restart your system for some settings to take effect."
-
-# Wait for user input before exiting
-read -rp "Press Enter to exit."
