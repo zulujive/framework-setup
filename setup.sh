@@ -28,6 +28,8 @@ apt upgrade -y
 # Unset DEBIAN_FRONTEND
 unset DEBIAN_FRONTEND
 
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
 read -p "Do you want to add stable Debian repositories as a failover (sometimes required for installing certain software)? (Y/n) " choice
 
