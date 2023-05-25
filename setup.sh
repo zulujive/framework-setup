@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#THIS SCRIPT MUST BE RUN AS ROOT (use sudo su)
-#Use this to configure your Framework Laptop for Debian Sid
+# THIS SCRIPT MUST BE RUN AS ROOT (use sudo su)
+# Use this to configure your Framework Laptop for Debian Sid
 
-#What the script does:
+# What the script does:
 # - Installs git, cURL, OpenJDK, and ZSH
 # - Installs various drivers and plugins
 # - Allows for the addition of stable Debian Buster packages
@@ -15,13 +15,13 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-#Install Necessary Packages
+# Install Necessary Packages
 apt update
 apt install git curl default-jdk zsh -y
 apt install fprintd libpam-fprintd powertop intel-media-va-driver intel-gpu-tools -y
-apt upgrade
+apt upgrade -y
 
-#Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
+# Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
 read -p "Do you want to add stable Debian repositories as a failover (sometimes required for installing certain software)? (Y/n) " choice
 
 # Convert the input to lowercase
@@ -44,7 +44,7 @@ else
     echo "Using unstable repos only"
 fi
 
-#Apply Settings
+# Apply Settings
 echo 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash module_blacklist=hid_sensor_hub"' >> /etc/default/grub
 update-grub
 gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
@@ -53,3 +53,6 @@ systemctl start powertop
 systemctl enable powertop
 echo PCIE_ASPM_ON_BAT=powersupersave >> /etc/tlp.conf
 echo "Successfully installed packages and updated settings. Please restart your system for some settings to take effect."
+
+# Wait for user input before exiting
+read -rp "Press Enter to exit."
