@@ -37,7 +37,7 @@ Once you've installed Debian, pat yourself on the back and go ahead and use my i
 ## Using
 Simply type this command into your terminal:
 ```
-wget -O - https://raw.githubusercontent.com/zulujive/framework-setup/main/setup.sh | sudo bash
+wget -O - https://raw.githubusercontent.com/zulujive/framework-setup/pages/setup.sh | sudo bash
 ```
 Restart after completing and set fingerprint to use in terminal.
 
