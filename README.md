@@ -3,17 +3,21 @@ Are you confused about installing Debian on your Framework (or even another x86 
 
 ## WHERE DO I DOWNLOAD DEBIAN FOR REAL?
 Glad you asked! Unlike virtually every other distro, Debian does not provide the ideal images for you to setup. We'll make it easy for you, navigate to this link:
-https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/
-It'll take you to the CD/DVD downloads page. Don't be fooled by the title, this is the page that you should be downloading from as it includes a wonderful installer and works similar to how you'd install distros like Ubuntu and PopOS.
+
+[Debian Light Installer Download](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/)
+
+It'll take you to the CD/DVD downloads page. Don't be fooled by the title, this is the page that you should be downloading from as it includes a wonderful installer and works similar to how you'd install distros like Ubuntu and PopOS. Scroll down all the way to the bottom, this is where you'll find the files that you can download.
 Go ahead and download this file:
 ```
 debian-12.x.x-amd64-netinst.iso
 ```
-It should be about 700mb, the small size is because the installer will download everything else as you install. Make sure you'll have access to a **wired** internet connection as WiFi may not work. If you don't have access to wired internet, you can simply go to this link:
-https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/
+It should be about 700mb, the small size is because the installer will download everything else as you install. Make sure you'll have access to a **wired** internet connection as WiFi may not work. If you don't have access to wired internet, you can simply go to this link and scroll all the way to the bottom:
+
+[Debian Offline Installer Download](https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/)
+
 and download this file:
 ```
-debian-12.0.0-amd64-DVD-1.iso
+debian-12.x.x-amd64-DVD-1.iso
 ```
 It's a larger download, but it doesn't require an internet connection for the installation.
 
