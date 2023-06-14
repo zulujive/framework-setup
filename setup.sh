@@ -54,14 +54,6 @@ echo -e "${GREEN}Packages Installed!${RESET}"
 echo ""
 
 # Ask about installing Debian Buster repos as a failover in case a package is not found in Sid repos
-echo -e "${CYAN}Using stable repos as failover${RESET}"
-cp /etc/apt/sources.list /etc/apt/sources.list.bak
-echo -e "${YELLOW}Adding Debian Buster Main...${RESET}"
-echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list 2>/dev/null | progressbar 3
-echo -e "${YELLOW}Adding Debian Buster Updates Main...${RESET}"
-echo "deb http://deb.debian.org/debian buster-updates main" >> /etc/apt/sources.list 2>/dev/null | progressbar 3
-echo -e "${YELLOW}Adding Debian Buster Security Updates Main...${RESET}"
-echo "deb http://security.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list 2>/dev/null | progressbar 3
 echo -e "${YELLOW}Applying repository changes...${RESET}"
 apt update >/dev/null 2>&1 | progressbar 15
 echo -e "${YELLOW}Uprading Packages...${YELLOW}"
